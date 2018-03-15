@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jre1.8.0_131"/>
+	<classpathentry kind="lib" path="D:/360/elicpse/CoolView/lib/weblaf-complete-1.29.jar"/>
+	<classpathentry kind="lib" path="D:/360/elicpse/CoolView/lib/hutool-all-3.3.2.jar"/>
+	<classpathentry kind="lib" path="D:/360/elicpse/CoolView/lib/beautyeye_lnf.jar"/>
+	<classpathentry kind="lib" path="D:/360/elicpse/CoolView/lib/commons-lang3-3.5.jar"/>
+	<classpathentry kind="lib" path="D:/360/elicpse/CoolView/lib/AppleJavaExtensions-1.4.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
