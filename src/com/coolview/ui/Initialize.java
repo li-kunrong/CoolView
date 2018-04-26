@@ -23,7 +23,7 @@ public class Initialize {
     public static void initTheme() {
         String theme = null;
         try {
-            theme = FileHelper.read("D:/360/elicpse/CoolView/data");
+            theme = FileHelper.read("./data");
         } catch (IOException e1) {
             // TODO Auto-generated catch block
             e1.printStackTrace();

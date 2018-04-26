@@ -33,7 +33,7 @@ public class FileHelper {
     }
     
     public static void changeTheme(String theme) throws IOException {
-        File file=new File("D:/360/elicpse/CoolView/data");
+        File file=new File("./data");
         if(!file.exists())
             file.createNewFile();
         FileOutputStream out=new FileOutputStream(file);       

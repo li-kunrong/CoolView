@@ -45,7 +45,7 @@ public class MainWindow {
     
     public static void main(String[] args) {
         try {
-            FileHelper.createFile("D:/360/elicpse/CoolView", "data");
+            FileHelper.createFile("./", "data");
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
