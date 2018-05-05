@@ -326,8 +326,37 @@ public class ManagerMenu implements ActionListener {
         item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         item.addActionListener(this);
         popupMenu.add(item);
+        
+        item = new JMenuItem("删除(D)");
+        item.setMnemonic(KeyEvent.VK_D);
+        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.ALT_MASK));
+        item.setActionCommand("delete");
+        item.addActionListener(this);
+        popupMenu.add(item);
+        
+        item = new JMenuItem("剪切(X)");
+        item.setMnemonic(KeyEvent.VK_X);
+        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.ALT_MASK));
+        item.setActionCommand("cut");
+        item.addActionListener(this);
+        popupMenu.add(item);
+
+        item = new JMenuItem("复制(C)");
+        item.setMnemonic(KeyEvent.VK_C);
+        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.ALT_MASK));
+        item.setActionCommand("copy");
+        item.addActionListener(this);
+        popupMenu.add(item);
+        
+        item = new JMenuItem("粘贴(P)");
+        item.setMnemonic(KeyEvent.VK_P);
+        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.ALT_MASK));
+        item.setActionCommand("paste");
+        item.addActionListener(this);
+        popupMenu.add(item);
 
         submenu = new JMenu("显示方式(S)");
+//        submenu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.ALT_MASK));
         submenu.setActionCommand("showType");
         popupMenu.add(submenu);
 
@@ -363,22 +392,20 @@ public class ManagerMenu implements ActionListener {
         group.add(radioButtonMenuItem);
         submenu.add(radioButtonMenuItem);
       
-        item = new JMenuItem("粘贴(P)");
-        item.setMnemonic(KeyEvent.VK_P);
-        item.setActionCommand("paste");
-        item.addActionListener(this);
-        popupMenu.add(item);
+       
         
 
 
         item = new JMenuItem("刷新(E)");
         item.setActionCommand("repaint");
         item.setMnemonic(KeyEvent.VK_E);
+        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_E, ActionEvent.ALT_MASK));
         item.addActionListener(this);
         popupMenu.add(item);
 
         submenu = new JMenu("排列依据(O)");
         submenu.setActionCommand("sort");
+//        submenu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.ALT_MASK));
         popupMenu.add(submenu);
 
         group = new ButtonGroup();
@@ -457,26 +484,30 @@ public class ManagerMenu implements ActionListener {
         JMenuItem item;
         JMenu menu;
 
-        item = new JMenuItem("查看(V)");
-        item.setMnemonic(KeyEvent.VK_V);
+        item = new JMenuItem("查看(L)");
+        item.setMnemonic(KeyEvent.VK_L);
+        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, ActionEvent.ALT_MASK));
         item.setActionCommand("openI");
         item.addActionListener(this);
         popup.add(item);
 
         item = new JMenuItem("剪切(X)");
         item.setMnemonic(KeyEvent.VK_X);
+        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.ALT_MASK));
         item.setActionCommand("cut");
         item.addActionListener(this);
         popup.add(item);
 
         item = new JMenuItem("复制(C)");
         item.setMnemonic(KeyEvent.VK_C);
+        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, ActionEvent.ALT_MASK));
         item.setActionCommand("copy");
         item.addActionListener(this);
         popup.add(item);
 
-        item = new JMenuItem("粘贴(P)");
-        item.setMnemonic(KeyEvent.VK_P);
+        item = new JMenuItem("粘贴(V)");
+        item.setMnemonic(KeyEvent.VK_V);
+        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, ActionEvent.ALT_MASK));
         item.setActionCommand("paste");
         item.addActionListener(this);
         popup.add(item);
@@ -485,18 +516,21 @@ public class ManagerMenu implements ActionListener {
 
         item = new JMenuItem("删除(D)");
         item.setMnemonic(KeyEvent.VK_D);
+        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.ALT_MASK));
         item.setActionCommand("delete");
         item.addActionListener(this);
         popup.add(item);
 
         item = new JMenuItem("重命名(M)");
         item.setMnemonic(KeyEvent.VK_M);
+        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, ActionEvent.ALT_MASK));
         item.setActionCommand("rename");
         item.addActionListener(this);
         popup.add(item);
 
         item = new JMenuItem("图片路径(P)");
         item.setMnemonic(KeyEvent.VK_P);
+        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.ALT_MASK));
         item.setActionCommand("path");
         item.addActionListener(this);
         popup.add(item);
@@ -528,6 +562,7 @@ public class ManagerMenu implements ActionListener {
             frame.dispose();
             break;
         case selectAll:
+            editPhoto.selectAll(MainWindow.curNodePath);
             
             break;
         case info:

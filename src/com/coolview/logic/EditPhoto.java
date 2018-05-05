@@ -5,6 +5,7 @@ import java.awt.Frame;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -12,12 +13,22 @@ import javax.swing.JOptionPane;
 import com.coolview.ui.MainWindow;
 import com.coolview.ui.frames.InfoFrame;
 import com.coolview.ui.menus.ManagerMenu;
+import com.coolview.ui.menus.RepaintPane;
 import com.coolview.ui.panes.ImageLabel;
 import com.coolview.ui.panes.ShowAllPane;
 
+import jdk.internal.org.objectweb.asm.tree.IntInsnNode;
 import sun.applet.Main;
 
 public class EditPhoto {
+    
+    public void selectAll(File nodePath){
+        if (MainWindow.imagesList == null || MainWindow.imagesList.size() == 0) {
+            return;
+        }
+        MainWindow.isSelectAll = true;
+        new RepaintPane().execute();
+    }
 
     public void view() {
         if (MainWindow.choosedImg != null) {
@@ -58,18 +69,35 @@ public class EditPhoto {
     }
 
     public void delete(File chooseFile, ImageLabel choosedImage) {
-        if (chooseFile == null)
-            return;
-        chooseFile.delete();
+        if (!MainWindow.isSelectAll){
+            if (chooseFile == null)
+                return;
+            chooseFile.delete();
 
-        MainWindow.curShowAllPane.remove(choosedImage);
+            MainWindow.curShowAllPane.remove(choosedImage);
+            MainWindow.curShowAllPane.repaint();
+            MainWindow.curShowAllPane.validate();
+
+            MainWindow.imagesList.remove(chooseFile);
+            MainWindow.choosedImgFile = null;
+            MainWindow.choosedImg = null;
+            return;
+        }
+        
+        File[] imageFile = BasicFunction.getImages(MainWindow.curNodePath);
+        for (int i = 0;i < imageFile.length; i++) {
+            
+            MainWindow.imagesList.remove(imageFile[i]);
+            imageFile[i].delete();
+        }
+//        for (File f:MainWindow.imagesList){
+//            f.delete();
+//            MainWindow.imagesList.remove(f);
+//        }
         MainWindow.curShowAllPane.repaint();
         MainWindow.curShowAllPane.validate();
-
-        MainWindow.imagesList.remove(chooseFile);
-        MainWindow.choosedImgFile = null;
-        MainWindow.choosedImg = null;
-
+        new RepaintPane().execute();
+        
     }
 
     public void rename(Frame frame, File editfile, File chooseFile) {
@@ -106,9 +134,14 @@ public class EditPhoto {
     }
 
     public void copy(ShowAllPane editPane) {
-        editPane = MainWindow.curShowAllPane;
-        MainWindow.needDeleted = false;
-        MainWindow.ishasEctype = true;
+        if (!MainWindow.isSelectAll){
+            editPane = MainWindow.curShowAllPane;
+            MainWindow.needDeleted = false;
+            MainWindow.ishasEctype = true; 
+        }
+        
+        
+       
 
     }
 

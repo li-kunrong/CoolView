@@ -9,6 +9,7 @@ import java.util.HashMap;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import com.coolview.logic.FileHelper;
@@ -21,12 +22,14 @@ import com.coolview.ui.panes.ShowAllPane;
 public class MainWindow {
     
     public static ArrayList<File> imagesList;
+    public static ArrayList<ImageLabel> labelList;
     //图标设置大小
     public static final int BIGLABEL_WIDTH = 216,BIGLABEL_HEIGHT = 162,
                       MIDDLELABEL_WIDTH = 120,MIDDLELABEL_HEIGHT = 90,
                       SMALLLABEL_WIDTH = 60,SMALLLABEL_HEIGHT = 45;
     public static int curImgWidth = 120,curImgHeight = 90;
     public static ShowAllPane curShowAllPane = null;
+    public static JTextField showSelcet_Pictures;
     public static ImageLabel choosedImg = null;
     public static JScrollPane sp;
     public static DefaultMutableTreeNode currentNode = null;
@@ -42,6 +45,7 @@ public class MainWindow {
     public static String showType = "middle";
     public static boolean sortIncrease = true;
     public static boolean ishasEctype = false;
+    public static boolean isSelectAll = false;
     
     public static void main(String[] args) {
         try {
@@ -66,13 +70,13 @@ public class MainWindow {
         // 初始化主题
         Initialize.initTheme();
         Initialize.initGlobalFont();
-        ManagerFrame managerFrame;
-        managerFrame = new ManagerFrame("coolview");
+        ManagerFrame managerFrame = new ManagerFrame("coolview");
         managerFrame.setFrame();
        
         managerFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         renameFile = new HashMap<File, File>();
     }
+    
     public static void createViewFrame(File imgfile){
         ViewFrame frame = new ViewFrame(imgfile);
 //        frame.setFrame();

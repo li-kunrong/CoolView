@@ -202,7 +202,7 @@ public class ViewFrame extends JFrame implements ActionListener {
   
 
     public static void main(String[] args) {
-        File file = new File("D:/image/好看.png");
+        File file = new File("d:\\image\\logo_eye.png");
         new ViewFrame(file);
     }
 

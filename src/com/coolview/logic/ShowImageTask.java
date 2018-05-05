@@ -1,10 +1,12 @@
 package com.coolview.logic;
 
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.io.File;
 import java.util.List;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.SwingWorker;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -65,7 +67,8 @@ public class ShowImageTask extends SwingWorker<Void, ImageLabel>{
             imgChangedHeight = (int)(1.0*imgChangedWidth / imgWidth * imgHeight);
             img.setImage(img.getImage().getScaledInstance(imgChangedWidth,imgChangedHeight,Image.SCALE_SMOOTH));
             imgLabel = new ImageLabel(img,imgfile);
-            //imgLabel.addMouseListener(new MouseEventOnImg(imgfile));
+          
+         
             //添加鼠标事件
             new ManagerMenu(imgLabel).PopupMenuForImg(imgLabel);
             publish(imgLabel); //会将数据抛出到process中

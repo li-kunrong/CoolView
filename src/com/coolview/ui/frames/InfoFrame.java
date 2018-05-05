@@ -178,7 +178,7 @@ public class InfoFrame extends JFrame{
         add(buttonPane, BorderLayout.SOUTH);
 
         validate();
-        setBounds(500, 500, 353, 462);
+        setBounds(500, 500, 500, 463);
         setVisible(true);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 

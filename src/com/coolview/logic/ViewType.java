@@ -10,6 +10,7 @@ import com.coolview.ui.MainWindow;
 import com.coolview.ui.menus.RepaintPane;
 
 public class ViewType {
+    
 
     public void changeToBig() {
         if (MainWindow.curImgWidth == MainWindow.BIGLABEL_WIDTH)

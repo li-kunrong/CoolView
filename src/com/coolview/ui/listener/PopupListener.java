@@ -10,8 +10,11 @@ import javax.swing.JPopupMenu;
 
 import com.coolview.ui.MainWindow;
 import com.coolview.ui.menus.ManagerMenu;
+import com.coolview.ui.menus.RepaintPane;
 import com.coolview.ui.panes.ImageLabel;
 import com.sun.prism.Image;
+
+import sun.awt.RepaintArea;
 
 
 public class PopupListener extends MouseAdapter {
@@ -26,6 +29,10 @@ public class PopupListener extends MouseAdapter {
     }
 
     private void maybeShowPopup(MouseEvent e) {
+        if (MainWindow.isSelectAll) {
+            MainWindow.isSelectAll = false;
+            new RepaintPane().execute();
+        }
         if (e.isPopupTrigger()) { // 右键
             System.out.println("右键");
             if (imageLabel != null) {
@@ -50,8 +57,9 @@ public class PopupListener extends MouseAdapter {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        // System.out.println("click");
-        imageLabel.setBackground(new Color(193, 230, 249));
+         System.out.println("click");
+        imageLabel.setBackground(new Color(0, 230, 249));
+        imageLabel.setForeground(new Color(0, 230, 249));
         imageLabel.setBorder(BorderFactory.createLineBorder(new Color(163, 230, 249), 1));
         imageLabel.setOpaque(true); // 这里是必须的
         if (!MainWindow.renameFile.isEmpty() && MainWindow.renameFile.containsKey(editFile)) // 已被重命名，换为姓名字
@@ -78,7 +86,7 @@ public class PopupListener extends MouseAdapter {
     public void mouseEntered(MouseEvent e) {
         if (MainWindow.choosedImg == imageLabel)
             return;
-        imageLabel.setBackground(new Color(0, 230, 249));//215
+        imageLabel.setBackground(new Color(100, 230, 249));//215
         imageLabel.setOpaque(true);
     }
 

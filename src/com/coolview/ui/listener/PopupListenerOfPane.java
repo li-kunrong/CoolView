@@ -6,6 +6,9 @@ import java.awt.event.MouseEvent;
 import javax.swing.JPopupMenu;
 
 import com.coolview.ui.MainWindow;
+import com.coolview.ui.menus.RepaintPane;
+
+import sun.applet.Main;
 
 
 public class PopupListenerOfPane extends MouseAdapter {
@@ -39,6 +42,11 @@ public class PopupListenerOfPane extends MouseAdapter {
             System.out.println("panel上的右键");
             System.out.println(MainWindow.curNodePath);
             popup.show(e.getComponent(), e.getX(), e.getY());
+        }else{
+            if (MainWindow.isSelectAll == true){
+                MainWindow.isSelectAll = false;
+                new RepaintPane().execute();
+            }
         }
     }
 }
