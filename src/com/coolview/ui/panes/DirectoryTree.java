@@ -111,10 +111,10 @@ public class DirectoryTree extends JPanel {
         this.add(showNumOfPictures, BorderLayout.SOUTH);
         setVisible(true);
         
-        MainWindow.showSelcet_Pictures = new JTextField("");
-        MainWindow.showSelcet_Pictures.setEditable(false);
-        this.add(MainWindow.showSelcet_Pictures, BorderLayout.NORTH);
-        setVisible(true);
+//        MainWindow.showSelcet_Pictures = new JTextField("");
+//        MainWindow.showSelcet_Pictures.setEditable(false);
+//        this.add(MainWindow.showSelcet_Pictures, BorderLayout.NORTH);
+//        setVisible(true);
     }
 
     class ExpandTask extends SwingWorker<Void, Void> {

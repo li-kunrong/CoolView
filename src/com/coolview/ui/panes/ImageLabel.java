@@ -1,5 +1,6 @@
 package com.coolview.ui.panes;
 
+import java.awt.BorderLayout;
 import java.io.File;
 
 import javax.swing.ImageIcon;
@@ -11,11 +12,18 @@ public class ImageLabel extends JLabel {
     private File imageFile;
 
     public ImageLabel(ImageIcon imageIcon, File imageFile) {
-        super(imageIcon, SwingConstants.CENTER);
+        super(imageFile.getName(),imageIcon, SwingConstants.CENTER);
         this.imageIcon = imageIcon;
         this.imageFile = imageFile;
-        // 待定
+        this.setHorizontalTextPosition(JLabel.CENTER);
+        this.setVerticalTextPosition(JLabel.BOTTOM);
     }
+
+//    private void addPanel(File imageFile2) {
+//        JLabel name = new JLabel(imageFile.getName());
+//        this.add(name,BorderLayout.SOUTH);
+//        
+//    }
 
     public File getImageFile() {
         return imageFile;
