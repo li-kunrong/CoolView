@@ -3,6 +3,7 @@ package com.coolview.logic;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.Icon;
@@ -50,6 +51,7 @@ public class ShowImageTask extends SwingWorker<Void, ImageLabel> {
         MainWindow.sp.revalidate();
         MainWindow.sp.updateUI();
         MainWindow.curShowAllPane = showAllPane;
+        MainWindow.labelList = new ArrayList<>();
 
         int n = MainWindow.imagesList.size();
         int index = 0;
@@ -73,6 +75,7 @@ public class ShowImageTask extends SwingWorker<Void, ImageLabel> {
             imgChangedHeight = (int)(1.0*imgChangedWidth / imgWidth * imgHeight);
             img.setImage(img.getImage().getScaledInstance(imgChangedWidth,imgChangedHeight,Image.SCALE_SMOOTH));
             imgLabel = new ImageLabel(img,imgfile);
+            MainWindow.labelList.add(imgLabel);
             
          
             //添加鼠标事件

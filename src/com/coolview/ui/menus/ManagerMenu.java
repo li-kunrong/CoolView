@@ -4,7 +4,6 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Comparator;
@@ -19,13 +18,12 @@ import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.KeyStroke;
 
-import com.alee.extended.breadcrumb.BreadcrumbElement;
 import com.coolview.logic.BasicFunction;
 import com.coolview.logic.EditPhoto;
 import com.coolview.logic.FileHelper;
 import com.coolview.logic.ViewType;
-import com.coolview.ui.Initialize;
 import com.coolview.ui.MainWindow;
+import com.coolview.ui.listener.AbstractListener;
 import com.coolview.ui.listener.PopupListener;
 import com.coolview.ui.listener.PopupListenerOfPane;
 import com.coolview.ui.panes.ImageLabel;
@@ -107,6 +105,13 @@ public class ManagerMenu implements ActionListener {
         menu.setMnemonic(KeyEvent.VK_E);
         menuBar.add(menu);
 
+        item = new JMenuItem("全选(A)");
+        item.setMnemonic(KeyEvent.VK_A);
+        item.setActionCommand("selectAll");
+        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
+        item.addActionListener(this);
+        menu.add(item);
+        
         item = new JMenuItem("剪切(T)");
         item.setMnemonic(KeyEvent.VK_T);
         item.setActionCommand("cut");
@@ -135,12 +140,12 @@ public class ManagerMenu implements ActionListener {
         item.addActionListener(this);
         menu.add(item);
 
-        item = new JMenuItem("旋转(R)");
-        item.setMnemonic(KeyEvent.VK_R);
-        item.setActionCommand("rotate");
-        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK));
-        item.addActionListener(this);
-        menu.add(item);
+//        item = new JMenuItem("旋转(R)");
+//        item.setMnemonic(KeyEvent.VK_R);
+//        item.setActionCommand("rotate");
+//        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK));
+//        item.addActionListener(this);
+//        menu.add(item);
 
         item = new JMenuItem("重命名(M)");
         item.setMnemonic(KeyEvent.VK_M);
@@ -474,8 +479,9 @@ public class ManagerMenu implements ActionListener {
         group.add(radioButtonMenuItem);
         submenu.add(radioButtonMenuItem);
 
-        MouseListener popupListener = new PopupListenerOfPane(popupMenu);
+        AbstractListener popupListener = new PopupListenerOfPane(popupMenu);
         component.addMouseListener(popupListener);
+        component.addKeyListener(popupListener);
 
     }
 
@@ -542,8 +548,10 @@ public class ManagerMenu implements ActionListener {
         item.addActionListener(this);
         popup.add(item);
 
-        MouseListener popupListener = new PopupListener(popup, imageLabel, editfile);
+        AbstractListener popupListener = new PopupListener(popup, imageLabel, editfile);
         component.addMouseListener(popupListener);
+        component.addKeyListener(popupListener);
+//        component.addKeyListener(new PaneKeyListener());
 
     }
 
@@ -563,7 +571,6 @@ public class ManagerMenu implements ActionListener {
             break;
         case selectAll:
             editPhoto.selectAll(MainWindow.curNodePath);
-            
             break;
         case info:
             editPhoto.getInfo(chooseFile, editfile);
@@ -580,12 +587,15 @@ public class ManagerMenu implements ActionListener {
          case copy:
              pasetFile = chooseFile;
              imageLabel = choosedImage;
-//             System.out.println(editfile.getName());
-             editPhoto.copy(editPane);
+             editPane = MainWindow.curShowAllPane;
+             if (chooseFile != null) {
+                 MainWindow.selectList.add(chooseFile);
+             }
+             editPhoto.copy();
          break;
          case paste:
              System.out.println(pasetFile);
-             editPhoto.paste(frame,pasetFile);
+             editPhoto.paste(frame);
 //             System.out.println(editfile);
          break;
         case delete:
@@ -665,5 +675,7 @@ public class ManagerMenu implements ActionListener {
         }
 
     }
+
+
 
 }

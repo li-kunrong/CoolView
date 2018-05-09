@@ -22,7 +22,11 @@ import com.coolview.ui.panes.ShowAllPane;
 public class MainWindow {
     
     public static ArrayList<File> imagesList;
+    public static ArrayList<File> fileList;
+    public static ArrayList<File> selectList = new ArrayList<>();
     public static ArrayList<ImageLabel> labelList;
+   
+
     //图标设置大小
     public static final int BIGLABEL_WIDTH = 216,BIGLABEL_HEIGHT = 162,
                       MIDDLELABEL_WIDTH = 120,MIDDLELABEL_HEIGHT = 90,
@@ -46,6 +50,7 @@ public class MainWindow {
     public static boolean sortIncrease = true;
     public static boolean ishasEctype = false;
     public static boolean isSelectAll = false;
+    public static boolean pressedCtrl = false;
     
     public static void main(String[] args) {
         try {
@@ -72,7 +77,8 @@ public class MainWindow {
         Initialize.initGlobalFont();
         ManagerFrame managerFrame = new ManagerFrame("coolview");
         managerFrame.setFrame();
-       
+        managerFrame.setFocusable(true);
+        
         managerFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         renameFile = new HashMap<File, File>();
     }
@@ -81,4 +87,12 @@ public class MainWindow {
         ViewFrame frame = new ViewFrame(imgfile);
 //        frame.setFrame();
     }
+    
+//    public static ArrayList<ImageLabel> getLabelList() {
+//        return labelList;
+//    }
+//
+//    public static void setLabelList(ArrayList<ImageLabel> labelList) {
+//        MainWindow.labelList = labelList;
+//    }
 }

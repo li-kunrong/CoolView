@@ -7,7 +7,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+import org.junit.validator.PublicClassValidator;
+
 public class ImageLabel extends JLabel {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     private ImageIcon imageIcon;
     private File imageFile;
 
@@ -18,12 +24,10 @@ public class ImageLabel extends JLabel {
         this.setHorizontalTextPosition(JLabel.CENTER);
         this.setVerticalTextPosition(JLabel.BOTTOM);
     }
-
-//    private void addPanel(File imageFile2) {
-//        JLabel name = new JLabel(imageFile.getName());
-//        this.add(name,BorderLayout.SOUTH);
-//        
-//    }
+    
+    public ImageLabel() {
+       
+    }
 
     public File getImageFile() {
         return imageFile;

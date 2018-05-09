@@ -11,7 +11,11 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
+import javax.naming.NameParser;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -24,40 +28,17 @@ import com.coolview.ui.panes.ShowAllPane;
 
 public class EditPhoto {
     
-    public static Image TextToImage(String text){
-        BufferedImage img = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = img.createGraphics();
-        Font font = new Font("Arial", Font.PLAIN, 48);
-        g2d.setFont(font);
-        FontMetrics fm = g2d.getFontMetrics();
-        int width = fm.stringWidth(text);
-        int height = fm.getHeight();
-        g2d.dispose();
-
-        img = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-        g2d = img.createGraphics();
-        g2d.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_QUALITY);
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        g2d.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_QUALITY);
-        g2d.setRenderingHint(RenderingHints.KEY_DITHERING, RenderingHints.VALUE_DITHER_ENABLE);
-        g2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-        g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
-        g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
-        g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
-        g2d.setFont(font);
-        fm = g2d.getFontMetrics();
-        g2d.setColor(Color.BLACK);
-        g2d.drawString(text, 0, fm.getAscent());
-        g2d.dispose();
-        return img;
-    }
-    
+   
     public void selectAll(File nodePath){
         if (MainWindow.imagesList == null || MainWindow.imagesList.size() == 0) {
             return;
         }
         MainWindow.isSelectAll = true;
-        new RepaintPane().execute();
+//        new RepaintPane().execute();
+        for (ImageLabel i : MainWindow.labelList) {
+            i.setBorder(BorderFactory.createLineBorder(new Color(163, 230, 249), 2));
+            i.setBackground(new Color(193, 230, 249));
+        }
     }
 
     public void view() {
@@ -163,73 +144,84 @@ public class EditPhoto {
 
     }
 
-    public void copy(ShowAllPane editPane) {
+    public void copy() {
         if (!MainWindow.isSelectAll){
-            editPane = MainWindow.curShowAllPane;
+            MainWindow.fileList = new ArrayList<>();
+            MainWindow.fileList = MainWindow.selectList;
             MainWindow.needDeleted = false;
             MainWindow.ishasEctype = true; 
+            return;
         }
         
-        
+        MainWindow.needDeleted = false;
+        MainWindow.ishasEctype = true; 
+        MainWindow.fileList = MainWindow.imagesList;
        
 
     }
 
-    public void paste(Frame frame, File editfile) {
-        if (!MainWindow.ishasEctype)
-            return;
-        System.out.println("进入粘贴");
+    public void paste(Frame frame) {
+        HashMap< String, Integer> nameMap = new HashMap<>();
         File targetDir = MainWindow.curNodePath;
-        System.out.println(targetDir);
-        System.out.println(editfile);
-        if (targetDir == null || editfile == null) {
-            return;
+        for (File f:MainWindow.fileList){
+            nameMap.put(BasicFunction.getNameWithOutExtension(f.getName()), 0);
         }
-        System.out.println("粘贴二层");
-        if (!editfile.exists()) {
-            JOptionPane.showMessageDialog(null, "粘贴文件：" + editfile.getName() + " 已不存在", "警告",
-                    javax.swing.JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        String newFileName;
-        if (MainWindow.needDeleted) {
-            if (targetDir.equals(new File(BasicFunction.getLocation(editfile.getAbsolutePath())))) {
-                JOptionPane.showMessageDialog(null, "目标目录和文件所在目录相同", "跳过", JOptionPane.WARNING_MESSAGE);
+        for (File editfile : MainWindow.fileList){
+            if (!MainWindow.ishasEctype)
+                return;
+            System.out.println("进入粘贴");
+            
+            System.out.println(targetDir);
+            System.out.println(editfile);
+            if (targetDir == null || editfile == null) {
                 return;
             }
-            newFileName = BasicFunction.getNameWithOutExtension(editfile.getName());
-            newFileName = BasicFunction.pasteImg(editfile, newFileName, targetDir);
-            if (newFileName == null) {
+            System.out.println("粘贴二层");
+            if (!editfile.exists()) {
+                JOptionPane.showMessageDialog(null, "粘贴文件：" + editfile.getName() + " 已不存在", "警告",
+                        javax.swing.JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            ChangeRateAndShowOnPane(newFileName);
 
-            editfile.delete();
-            MainWindow.imagesList.remove(editfile);
-
-        } else {
-            newFileName = JOptionPane.showInputDialog(frame, "请输入新文件名称",
-                    BasicFunction.getNameWithOutExtension(editfile.getName()));
-            if (newFileName == null) {
-                return;
-            }
-            while (!BasicFunction.isLegalName(editfile, newFileName, targetDir)) {
-                if (newFileName == null)
+            String newFileName;
+            if (MainWindow.needDeleted) {
+//                if (targetDir.equals(new File(BasicFunction.getLocation(editfile.getAbsolutePath())))) {
+//                    JOptionPane.showMessageDialog(null, "目标目录和文件所在目录相同", "跳过", JOptionPane.WARNING_MESSAGE);
+//                    return;
+//                }
+                newFileName = BasicFunction.getNameWithOutExtension(editfile.getName());
+                if (nameMap.containsKey(newFileName)){
+                    nameMap.put(newFileName, nameMap.get(newFileName)+1);
+                    newFileName = newFileName+"("+nameMap.get(newFileName) + ")";
+                }
+                
+                newFileName = BasicFunction.pasteImg(editfile, newFileName, targetDir);
+                if (newFileName == null) {
                     return;
-                newFileName = JOptionPane.showInputDialog(frame, "请输入新文件名称",
-                        BasicFunction.getNameWithOutExtension(editfile.getName()));
-            }
-            newFileName = BasicFunction.getNameWithOutExtension(editfile.getName());
-            newFileName = BasicFunction.pasteImg(editfile, newFileName, targetDir);
-            if (newFileName == null) {
-                return;
-            }
-            ChangeRateAndShowOnPane(newFileName);
-            File file = new File(newFileName);
-            MainWindow.imagesList.add(file);
-        }
+                }
+                ChangeRateAndShowOnPane(newFileName);
 
+                editfile.delete();
+                MainWindow.imagesList.remove(editfile);
+
+            } else {
+                
+                newFileName = BasicFunction.getNameWithOutExtension(editfile.getName());
+                if (nameMap.containsKey(newFileName)){
+                    nameMap.put(newFileName, nameMap.get(newFileName)+1);
+                    newFileName = newFileName+"("+nameMap.get(newFileName) + ")";
+                }
+                newFileName = BasicFunction.pasteImg(editfile, newFileName, targetDir);
+                if (newFileName == null) {
+                    return;
+                }
+                ChangeRateAndShowOnPane(newFileName);
+                File file = new File(newFileName);
+                MainWindow.imagesList.add(file);
+            }
+
+        }
+        
     }
 
     private void ChangeRateAndShowOnPane(String newFileName) {

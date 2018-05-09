@@ -13,12 +13,10 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.event.MouseInputListener;
 
 import com.coolview.ui.MainWindow;
-import com.coolview.ui.listener.PaneKeyListener;
 
 public class ShowAllPane extends JPanel implements MouseInputListener , KeyListener{
     
@@ -28,12 +26,12 @@ public class ShowAllPane extends JPanel implements MouseInputListener , KeyListe
     private int CX, CY;// 查找该点是否有组件
     JButton jButton = new JButton("test");
     ArrayList<Component> components = new ArrayList<>();
+    private ArrayList<ImageLabel> imageLabels = new ArrayList<>();// 保存已经选中的label
     private ImageIcon image;
-    private ImageIcon jLabel;
-    private ArrayList<JLabel> jLabels = new ArrayList<>();// 保存已经选中的label
-
+    
     public ShowAllPane(){
         super();
+        this.setFocusable(true);
         FlowLayout flow = new FlowLayout();
         flow.setAlignment(FlowLayout.LEFT);
         setLayout(flow);
@@ -43,7 +41,6 @@ public class ShowAllPane extends JPanel implements MouseInputListener , KeyListe
         setVisible(true);
         addMouseListener(this); 
         addMouseMotionListener(this);
-        addKeyListener(new PaneKeyListener());
         validate();
    }
     
@@ -59,7 +56,6 @@ public class ShowAllPane extends JPanel implements MouseInputListener , KeyListe
         
         addMouseListener(this); 
         addMouseMotionListener(this);
-        addKeyListener(new PaneKeyListener());
         image = new ImageIcon(filePath);
 //        jLabel = new JLabel(fileName,image,SwingConstants.CENTER);
 //        this.add(jLabel);
@@ -115,11 +111,12 @@ public class ShowAllPane extends JPanel implements MouseInputListener , KeyListe
         x1 = e.getX();
         y1 = e.getY();
         components.clear();
-        for (int i = 0; i < jLabels.size(); i++) {
-            jLabels.get(i).setBorder(null);
+        for (int i = 0; i < imageLabels.size(); i++) {
+            imageLabels.get(i).setBorder(null);
         }
-        jLabels.clear();
+        imageLabels.clear();
         repaint();
+        MainWindow.statusbar.setText("选中了"+0+"张图片");
     }
 
     @Override
@@ -131,7 +128,7 @@ public class ShowAllPane extends JPanel implements MouseInputListener , KeyListe
         for (; CX < x + width; CX += 10) {
             for (CY = y; CY < y + height; CY += 10) {
                 component = this.getComponentAt(CX, CY);
-                if (component != null && component instanceof JLabel) {
+                if (component != null && component instanceof ImageLabel) {
                     if (components.indexOf(component) == -1) {
                         components.add(this.getComponentAt(CX, CY));
                     }
@@ -139,15 +136,19 @@ public class ShowAllPane extends JPanel implements MouseInputListener , KeyListe
             }
         }
         for (int i = 0; i < components.size(); i++) {
-            jLabels.add((JLabel) components.get(i));
+            imageLabels.add((ImageLabel) components.get(i));
         }
-        for (int i = 0; i < jLabels.size(); i++) {
-            jLabels.get(i).setBorder(BorderFactory.createLineBorder(Color.BLUE, 2));
-            System.out.println(jLabels.get(i).getText());
-//            ImageIcon temp = (ImageIcon) jLabels.get(i);
-//            MainWindow.selectList.add(jLabels.get(i));
+        MainWindow.selectList = new ArrayList<>();
+        for (int i = 0; i < imageLabels.size(); i++) {
+            imageLabels.get(i).setBorder(BorderFactory.createLineBorder(new Color(163, 230, 249), 2));
+            System.out.println(imageLabels.get(i).getText());
+//            ImageIcon temp = (ImageIcon) imageLabels.get(i);
+            
+            MainWindow.selectList.add(imageLabels.get(i).getImageFile());
         }
-        System.out.println(jLabels.size());
+        System.out.println(imageLabels.size());
+        MainWindow.statusbar.setText("选中了"+imageLabels.size()+"张图片");
+        System.out.println("selectList的的大小"+MainWindow.selectList.size());
         width = 0;
         height = 0;
         repaint();
