@@ -15,6 +15,7 @@ import com.coolview.ui.panes.ManagerPane;
 public class ManagerFrame extends JFrame{
     public ManagerFrame(String name) {
         super(name);
+       
     }
     
     public void setFrame() {

@@ -1,23 +1,47 @@
 package com.coolview.logic;
 
+import java.awt.Color;
 import java.awt.Desktop;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Frame;
+import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
+import javax.naming.NameParser;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
 import com.coolview.ui.MainWindow;
 import com.coolview.ui.frames.InfoFrame;
 import com.coolview.ui.menus.ManagerMenu;
+import com.coolview.ui.menus.RepaintPane;
 import com.coolview.ui.panes.ImageLabel;
 import com.coolview.ui.panes.ShowAllPane;
 
 import sun.applet.Main;
 
 public class EditPhoto {
+    
+   
+    public void selectAll(File nodePath){
+        if (MainWindow.imagesList == null || MainWindow.imagesList.size() == 0) {
+            return;
+        }
+        MainWindow.isSelectAll = true;
+//        new RepaintPane().execute();
+        for (ImageLabel i : MainWindow.labelList) {
+            i.setBorder(BorderFactory.createLineBorder(new Color(163, 230, 249), 2));
+            i.setBackground(new Color(193, 230, 249));
+        }
+    }
 
     public void view() {
         if (MainWindow.choosedImg != null) {
@@ -58,18 +82,35 @@ public class EditPhoto {
     }
 
     public void delete(File chooseFile, ImageLabel choosedImage) {
-        if (chooseFile == null)
-            return;
-        chooseFile.delete();
+        if (!MainWindow.isSelectAll){
+            if (chooseFile == null)
+                return;
+            chooseFile.delete();
 
-        MainWindow.curShowAllPane.remove(choosedImage);
+            MainWindow.curShowAllPane.remove(choosedImage);
+            MainWindow.curShowAllPane.repaint();
+            MainWindow.curShowAllPane.validate();
+
+            MainWindow.imagesList.remove(chooseFile);
+            MainWindow.choosedImgFile = null;
+            MainWindow.choosedImg = null;
+            return;
+        }
+        
+        File[] imageFile = BasicFunction.getImages(MainWindow.curNodePath);
+        for (int i = 0;i < imageFile.length; i++) {
+            
+            MainWindow.imagesList.remove(imageFile[i]);
+            imageFile[i].delete();
+        }
+//        for (File f:MainWindow.imagesList){
+//            f.delete();
+//            MainWindow.imagesList.remove(f);
+//        }
         MainWindow.curShowAllPane.repaint();
         MainWindow.curShowAllPane.validate();
-
-        MainWindow.imagesList.remove(chooseFile);
-        MainWindow.choosedImgFile = null;
-        MainWindow.choosedImg = null;
-
+        new RepaintPane().execute();
+        
     }
 
     public void rename(Frame frame, File editfile, File chooseFile) {
@@ -105,68 +146,89 @@ public class EditPhoto {
 
     }
 
-    public void copy(ShowAllPane editPane) {
-        editPane = MainWindow.curShowAllPane;
+    public void copy() {
+        if (!MainWindow.isSelectAll){
+//            MainWindow.fileList = new ArrayList<>();
+            MainWindow.fileList = MainWindow.selectList;
+            System.out.println(MainWindow.selectList.size());
+            MainWindow.needDeleted = false;
+            MainWindow.ishasEctype = true; 
+            return;
+        }
+        
         MainWindow.needDeleted = false;
-        MainWindow.ishasEctype = true;
+        MainWindow.ishasEctype = true; 
+        MainWindow.fileList = MainWindow.imagesList;
+       
 
     }
 
-    public void paste(Frame frame, File editfile) {
-        if (!MainWindow.ishasEctype)
+    public void paste(Frame frame) {
+        if (MainWindow.fileList == null){
+            System.out.println("fileList == null" );
             return;
-        System.out.println("进入粘贴");
+        }
+        HashMap< String, Integer> nameMap = new HashMap<>();
         File targetDir = MainWindow.curNodePath;
-        System.out.println(targetDir);
-        System.out.println(editfile);
-        if (targetDir == null || editfile == null) {
-            return;
+        for (File f:MainWindow.imagesList){
+            nameMap.put(BasicFunction.getNameWithOutExtension(f.getName()), 0);
         }
-        System.out.println("粘贴二层");
-        if (!editfile.exists()) {
-            JOptionPane.showMessageDialog(null, "粘贴文件：" + editfile.getName() + " 已不存在", "警告",
-                    javax.swing.JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        String newFileName;
-        if (MainWindow.needDeleted) {
-            if (targetDir.equals(new File(BasicFunction.getLocation(editfile.getAbsolutePath())))) {
-                JOptionPane.showMessageDialog(null, "目标目录和文件所在目录相同", "跳过", JOptionPane.WARNING_MESSAGE);
+        for (File editfile : MainWindow.fileList){
+            if (!MainWindow.ishasEctype)
+                return;
+            System.out.println("进入粘贴");
+            
+            System.out.println(targetDir);
+            System.out.println(editfile);
+            if (targetDir == null || editfile == null) {
                 return;
             }
-            newFileName = BasicFunction.getNameWithOutExtension(editfile.getName());
-            newFileName = BasicFunction.pasteImg(editfile, newFileName, targetDir);
-            if (newFileName == null) {
+            System.out.println("粘贴二层");
+            if (!editfile.exists()) {
+                JOptionPane.showMessageDialog(null, "粘贴文件：" + editfile.getName() + " 已不存在", "警告",
+                        javax.swing.JOptionPane.WARNING_MESSAGE);
                 return;
             }
-            ChangeRateAndShowOnPane(newFileName);
 
-            editfile.delete();
-            MainWindow.imagesList.remove(editfile);
-
-        } else {
-            newFileName = JOptionPane.showInputDialog(frame, "请输入新文件名称",
-                    BasicFunction.getNameWithOutExtension(editfile.getName()));
-            if (newFileName == null) {
-                return;
-            }
-            while (!BasicFunction.isLegalName(editfile, newFileName, targetDir)) {
-                if (newFileName == null)
+            String newFileName;
+            if (MainWindow.needDeleted) {
+//                if (targetDir.equals(new File(BasicFunction.getLocation(editfile.getAbsolutePath())))) {
+//                    JOptionPane.showMessageDialog(null, "目标目录和文件所在目录相同", "跳过", JOptionPane.WARNING_MESSAGE);
+//                    return;
+//                }
+                newFileName = BasicFunction.getNameWithOutExtension(editfile.getName());
+                if (nameMap.containsKey(newFileName)){
+                    nameMap.put(newFileName, nameMap.get(newFileName)+1);
+                    newFileName = newFileName+"("+nameMap.get(newFileName) + ")";
+                }
+                
+                newFileName = BasicFunction.pasteImg(editfile, newFileName, targetDir);
+                if (newFileName == null) {
                     return;
-                newFileName = JOptionPane.showInputDialog(frame, "请输入新文件名称",
-                        BasicFunction.getNameWithOutExtension(editfile.getName()));
-            }
-            newFileName = BasicFunction.getNameWithOutExtension(editfile.getName());
-            newFileName = BasicFunction.pasteImg(editfile, newFileName, targetDir);
-            if (newFileName == null) {
-                return;
-            }
-            ChangeRateAndShowOnPane(newFileName);
-            File file = new File(newFileName);
-            MainWindow.imagesList.add(file);
-        }
+                }
+                ChangeRateAndShowOnPane(newFileName);
 
+                editfile.delete();
+                MainWindow.imagesList.remove(editfile);
+
+            } else {
+                
+                newFileName = BasicFunction.getNameWithOutExtension(editfile.getName());
+                if (nameMap.containsKey(newFileName)){
+                    nameMap.put(newFileName, nameMap.get(newFileName)+1);
+                    newFileName = newFileName+"("+nameMap.get(newFileName) + ")";
+                }
+                newFileName = BasicFunction.pasteImg(editfile, newFileName, targetDir);
+                if (newFileName == null) {
+                    return;
+                }
+                ChangeRateAndShowOnPane(newFileName);
+                File file = new File(newFileName);
+                MainWindow.imagesList.add(file);
+            }
+
+        }
+        
     }
 
     private void ChangeRateAndShowOnPane(String newFileName) {

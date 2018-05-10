@@ -1,8 +1,11 @@
 package com.coolview.ui.menus;
 
+import java.awt.Color;
 import java.awt.Image;
 import java.io.File;
+import java.util.ArrayList;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.SwingWorker;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -48,6 +51,7 @@ public class RepaintPane extends SwingWorker<Void, ImageLabel>{
         MainWindow.sp.revalidate();
         MainWindow.sp.updateUI();
         MainWindow.curShowAllPane = showAllPane;
+        MainWindow.labelList = new ArrayList<>();
         int n = MainWindow.imagesList.size();
         System.out.println(n);
         
@@ -69,6 +73,10 @@ public class RepaintPane extends SwingWorker<Void, ImageLabel>{
             imgChangedHeight = (int)(1.0*imgChangedWidth / imgWidth * imgHeight);
             img.setImage(img.getImage().getScaledInstance(imgChangedWidth,imgChangedHeight,Image.SCALE_SMOOTH));
             imgLabel = new ImageLabel(img,imgfile);
+            MainWindow.labelList.add(imgLabel);
+            if (MainWindow.isSelectAll) {
+                imgLabel.setBorder(BorderFactory.createLineBorder(new Color(163, 230, 249), 3));
+            }
             new ManagerMenu(imgLabel).PopupMenuForImg(imgLabel);
             publish(imgLabel);
         }

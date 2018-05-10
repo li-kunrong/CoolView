@@ -73,6 +73,7 @@ public class DirectoryTree extends JPanel {
 
     public DirectoryTree() {
         super(new BorderLayout());
+        setFocusable(false);
         // 根目录
 
         DefaultMutableTreeNode top = new DefaultMutableTreeNode(new IconData(ICON_COMPUTERCLOSE, ICON_COMPUTER, "此电脑"));
@@ -98,9 +99,10 @@ public class DirectoryTree extends JPanel {
 
         tree.addTreeExpansionListener(new DirExpansionListener());
         tree.addTreeSelectionListener(new DirSelectionListener());
-        tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION); // 单一选择
-        tree.setShowsRootHandles(true);
+//        tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION); // 单一选择
+//        tree.setShowsRootHandles(true);
         tree.setEditable(false);
+        tree.setFocusable(false);
 
         JScrollPane jsp = new JScrollPane();
         jsp.getViewport().add(tree);
@@ -110,6 +112,11 @@ public class DirectoryTree extends JPanel {
         showNumOfPictures.setEditable(false);
         this.add(showNumOfPictures, BorderLayout.SOUTH);
         setVisible(true);
+        
+//        MainWindow.showSelcet_Pictures = new JTextField("");
+//        MainWindow.showSelcet_Pictures.setEditable(false);
+//        this.add(MainWindow.showSelcet_Pictures, BorderLayout.NORTH);
+//        setVisible(true);
     }
 
     class ExpandTask extends SwingWorker<Void, Void> {

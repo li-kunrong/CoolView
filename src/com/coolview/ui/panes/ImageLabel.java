@@ -1,20 +1,32 @@
 package com.coolview.ui.panes;
 
+import java.awt.BorderLayout;
 import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
+import org.junit.validator.PublicClassValidator;
+
 public class ImageLabel extends JLabel {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     private ImageIcon imageIcon;
     private File imageFile;
 
     public ImageLabel(ImageIcon imageIcon, File imageFile) {
-        super(imageIcon, SwingConstants.CENTER);
+        super(imageFile.getName(),imageIcon, SwingConstants.CENTER);
         this.imageIcon = imageIcon;
         this.imageFile = imageFile;
-        // 待定
+        this.setHorizontalTextPosition(JLabel.CENTER);
+        this.setVerticalTextPosition(JLabel.BOTTOM);
+    }
+    
+    public ImageLabel() {
+       
     }
 
     public File getImageFile() {
