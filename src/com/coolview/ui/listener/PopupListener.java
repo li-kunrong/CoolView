@@ -1,5 +1,7 @@
 package com.coolview.ui.listener;
 
+import static org.hamcrest.CoreMatchers.sameInstance;
+
 import java.awt.Color;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -67,15 +69,15 @@ public class PopupListener extends AbstractListener {
          jLabels = MainWindow.labelList;//获取当前的jlabel数组
          mulPressed = MainWindow.pressedCtrl;//当前是否按压了ctrl
          if(!mulPressed) {//没按压ctrl只能单选
-             if(lastImage != null) {
-                 //看是否点击了上一个jlabel，如果是，则border设置为空，
-                 //如果不是，上个jlabel的border设置为空，此jlabelborder设置为选中
+//             if(lastImage != null) {
+//                 //看是否点击了上一个jlabel，如果是，则border设置为空，
+//                 //如果不是，上个jlabel的border设置为空，此jlabelborder设置为选中
                  for (ImageLabel i : MainWindow.labelList) {
                      i.setBorder(null);
                      i.setBackground(null);
                  }
                  
-             }
+//             }
              imageLabel.setBackground(new Color(0, 230, 249));
              imageLabel.setBorder(BorderFactory.createLineBorder(new Color(215, 230, 249), 2));
              imageLabel.setOpaque(true); // 这里是必须的
@@ -89,6 +91,7 @@ public class PopupListener extends AbstractListener {
                  MainWindow.choosedImg.setBorder(null);
              }
              MainWindow.choosedImg = imageLabel;
+             MainWindow.selectList.clear();
 //             MainWindow.selectList.clear();
              MainWindow.selectList.add(imageLabel.getImageFile());
              MainWindow.statusbar.setText("选中了"+MainWindow.selectList.size() + "张图片");
