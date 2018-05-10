@@ -26,6 +26,8 @@ import com.coolview.ui.menus.RepaintPane;
 import com.coolview.ui.panes.ImageLabel;
 import com.coolview.ui.panes.ShowAllPane;
 
+import sun.applet.Main;
+
 public class EditPhoto {
     
    
@@ -146,8 +148,9 @@ public class EditPhoto {
 
     public void copy() {
         if (!MainWindow.isSelectAll){
-            MainWindow.fileList = new ArrayList<>();
+//            MainWindow.fileList = new ArrayList<>();
             MainWindow.fileList = MainWindow.selectList;
+            System.out.println(MainWindow.selectList.size());
             MainWindow.needDeleted = false;
             MainWindow.ishasEctype = true; 
             return;
@@ -161,9 +164,13 @@ public class EditPhoto {
     }
 
     public void paste(Frame frame) {
+        if (MainWindow.fileList == null){
+            System.out.println("fileList == null" );
+            return;
+        }
         HashMap< String, Integer> nameMap = new HashMap<>();
         File targetDir = MainWindow.curNodePath;
-        for (File f:MainWindow.fileList){
+        for (File f:MainWindow.imagesList){
             nameMap.put(BasicFunction.getNameWithOutExtension(f.getName()), 0);
         }
         for (File editfile : MainWindow.fileList){

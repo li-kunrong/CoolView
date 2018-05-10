@@ -18,8 +18,8 @@ import javax.swing.event.MouseInputListener;
 
 import com.coolview.ui.MainWindow;
 
-public class ShowAllPane extends JPanel implements MouseInputListener , KeyListener{
-    
+public class ShowAllPane extends JPanel implements MouseInputListener, KeyListener {
+
     private int x1, y1;// 鼠标点击的起始位置
     private int x, y;// 矩形左上角
     private int width, height;// 矩形长宽
@@ -28,47 +28,47 @@ public class ShowAllPane extends JPanel implements MouseInputListener , KeyListe
     ArrayList<Component> components = new ArrayList<>();
     private ArrayList<ImageLabel> imageLabels = new ArrayList<>();// 保存已经选中的label
     private ImageIcon image;
-    
-    public ShowAllPane(){
+
+    public ShowAllPane() {
         super();
         this.setFocusable(true);
         FlowLayout flow = new FlowLayout();
         flow.setAlignment(FlowLayout.LEFT);
         setLayout(flow);
-        setBackground(new Color(255,255,255));
+        setBackground(new Color(255, 255, 255));
         setSize(this.getSize());
         setOpaque(true);
         setVisible(true);
-        addMouseListener(this); 
+        addMouseListener(this);
         addMouseMotionListener(this);
         validate();
-   }
-    
-    public ShowAllPane(String fileName,String filePath) {
+    }
+
+    public ShowAllPane(String fileName, String filePath) {
         super();
         FlowLayout flow = new FlowLayout();
         flow.setAlignment(FlowLayout.LEFT);
-//        setLayout(flow);
-        setBackground(new Color(255,255,255));
+        // setLayout(flow);
+        setBackground(new Color(255, 255, 255));
         setSize(this.getSize());
         setOpaque(true);
         setVisible(true);
-        
-        addMouseListener(this); 
+
+        addMouseListener(this);
         addMouseMotionListener(this);
         image = new ImageIcon(filePath);
-//        jLabel = new JLabel(fileName,image,SwingConstants.CENTER);
-//        this.add(jLabel);
-//        jLabel = new JLabel(fileName,image,SwingConstants.CENTER);
-//        this.add(jLabel);
-//        jLabel = new JLabel(fileName,image,SwingConstants.CENTER);
-//        this.add(jLabel);
-//        jLabel = new JLabel(fileName,image,SwingConstants.CENTER);
-//        this.add(jLabel);   
-//      for(int i = 0; i < 10; i++) {
-//          jButton = new JButton("hhh");
-//          this.add(jButton);
-//      }
+        // jLabel = new JLabel(fileName,image,SwingConstants.CENTER);
+        // this.add(jLabel);
+        // jLabel = new JLabel(fileName,image,SwingConstants.CENTER);
+        // this.add(jLabel);
+        // jLabel = new JLabel(fileName,image,SwingConstants.CENTER);
+        // this.add(jLabel);
+        // jLabel = new JLabel(fileName,image,SwingConstants.CENTER);
+        // this.add(jLabel);
+        // for(int i = 0; i < 10; i++) {
+        // jButton = new JButton("hhh");
+        // this.add(jButton);
+        // }
         validate();
     }
 
@@ -108,6 +108,7 @@ public class ShowAllPane extends JPanel implements MouseInputListener , KeyListe
 
     @Override
     public void mousePressed(MouseEvent e) {
+
         x1 = e.getX();
         y1 = e.getY();
         components.clear();
@@ -116,7 +117,8 @@ public class ShowAllPane extends JPanel implements MouseInputListener , KeyListe
         }
         imageLabels.clear();
         repaint();
-        MainWindow.statusbar.setText("选中了"+0+"张图片");
+        MainWindow.statusbar.setText("选中了" + 0 + "张图片");
+
     }
 
     @Override
@@ -138,17 +140,20 @@ public class ShowAllPane extends JPanel implements MouseInputListener , KeyListe
         for (int i = 0; i < components.size(); i++) {
             imageLabels.add((ImageLabel) components.get(i));
         }
-        MainWindow.selectList = new ArrayList<>();
+        if (components.size()!=0){//没有组件才新建list
+            MainWindow.selectList = new ArrayList<>();
+        }
+       
         for (int i = 0; i < imageLabels.size(); i++) {
             imageLabels.get(i).setBorder(BorderFactory.createLineBorder(new Color(163, 230, 249), 2));
             System.out.println(imageLabels.get(i).getText());
-//            ImageIcon temp = (ImageIcon) imageLabels.get(i);
-            
+            // ImageIcon temp = (ImageIcon) imageLabels.get(i);
+
             MainWindow.selectList.add(imageLabels.get(i).getImageFile());
         }
         System.out.println(imageLabels.size());
-        MainWindow.statusbar.setText("选中了"+imageLabels.size()+"张图片");
-        System.out.println("selectList的的大小"+MainWindow.selectList.size());
+        MainWindow.statusbar.setText("选中了" + imageLabels.size() + "张图片");
+        System.out.println("selectList的的大小" + MainWindow.selectList.size());
         width = 0;
         height = 0;
         repaint();
@@ -160,6 +165,7 @@ public class ShowAllPane extends JPanel implements MouseInputListener , KeyListe
 
     @Override
     public void mouseClicked(MouseEvent e) {
+
     }
 
     @Override
@@ -181,19 +187,19 @@ public class ShowAllPane extends JPanel implements MouseInputListener , KeyListe
     @Override
     public void keyTyped(KeyEvent e) {
         // TODO Auto-generated method stub
-        
+
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-        System.out.println("按下："+KeyEvent.getKeyText(e.getKeyCode()) + "\n");
-        
+        System.out.println("按下：" + KeyEvent.getKeyText(e.getKeyCode()) + "\n");
+
     }
 
     @Override
     public void keyReleased(KeyEvent e) {
-        System.out.println("松开："+KeyEvent.getKeyText(e.getKeyCode()) + "\n");
-        
+        System.out.println("松开：" + KeyEvent.getKeyText(e.getKeyCode()) + "\n");
+
     }
 
 }

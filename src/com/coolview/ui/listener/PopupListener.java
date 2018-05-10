@@ -89,7 +89,7 @@ public class PopupListener extends AbstractListener {
                  MainWindow.choosedImg.setBorder(null);
              }
              MainWindow.choosedImg = imageLabel;
-             MainWindow.selectList.clear();
+//             MainWindow.selectList.clear();
              MainWindow.selectList.add(imageLabel.getImageFile());
              MainWindow.statusbar.setText("选中了"+MainWindow.selectList.size() + "张图片");
              lastImage = imageLabel;
@@ -142,26 +142,9 @@ public class PopupListener extends AbstractListener {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        maybeShowPopup(e);
+//        maybeShowPopup(e);
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
-        // TODO Auto-generated method stub
-        
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        System.out.println("按下："+KeyEvent.getKeyText(e.getKeyCode()) + "\n");
-        
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        System.out.println("松开：" + KeyEvent.getKeyText(e.getKeyCode()) + "\n");
-        
-        
-    }
+   
 
 }

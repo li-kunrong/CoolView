@@ -99,9 +99,6 @@ public class ShowImageTask extends SwingWorker<Void, ImageLabel> {
             }
             showAllPane.add(chunks.get(i));
             showAllPane.updateUI();
-            // showAllPane.repaint();
-            // showAllPane.validate();
-            // System.out.println("adding");
         }
     }
 

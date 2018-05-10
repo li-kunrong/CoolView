@@ -1,18 +1,11 @@
 package com.coolview.ui.listener;
 
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.security.Key;
 
 import javax.swing.JPopupMenu;
 
 import com.coolview.ui.MainWindow;
-import com.coolview.ui.menus.RepaintPane;
 import com.coolview.ui.panes.ImageLabel;
-
-import sun.applet.Main;
 
 
 public class PopupListenerOfPane extends AbstractListener  {
@@ -58,21 +51,4 @@ public class PopupListenerOfPane extends AbstractListener  {
         }
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
-       
-        
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        System.out.println("按下："+KeyEvent.getKeyText(e.getKeyCode()) + "\n");
-        
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        System.out.println("松开：" + KeyEvent.getKeyText(e.getKeyCode()) + "\n");
-        
-    }
 }

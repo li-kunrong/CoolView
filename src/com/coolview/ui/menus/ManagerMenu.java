@@ -588,9 +588,6 @@ public class ManagerMenu implements ActionListener {
              pasetFile = chooseFile;
              imageLabel = choosedImage;
              editPane = MainWindow.curShowAllPane;
-             if (chooseFile != null) {
-                 MainWindow.selectList.add(chooseFile);
-             }
              editPhoto.copy();
          break;
          case paste:

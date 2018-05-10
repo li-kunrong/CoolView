@@ -15,6 +15,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import com.coolview.logic.FileHelper;
 import com.coolview.ui.frames.ManagerFrame;
 import com.coolview.ui.frames.ViewFrame;
+import com.coolview.ui.listener.PaneKeyListener;
 import com.coolview.ui.panes.ImageLabel;
 import com.coolview.ui.panes.ShowAllPane;
 
@@ -78,6 +79,7 @@ public class MainWindow {
         ManagerFrame managerFrame = new ManagerFrame("coolview");
         managerFrame.setFrame();
         managerFrame.setFocusable(true);
+        managerFrame.addKeyListener(new PaneKeyListener());
         
         managerFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         renameFile = new HashMap<File, File>();
