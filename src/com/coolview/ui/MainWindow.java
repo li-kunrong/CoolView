@@ -86,15 +86,8 @@ public class MainWindow {
     }
     
     public static void createViewFrame(File imgfile){
-        ViewFrame frame = new ViewFrame(imgfile);
+        ViewFrame frame = new ViewFrame(imgfile,false);
 //        frame.setFrame();
     }
     
-//    public static ArrayList<ImageLabel> getLabelList() {
-//        return labelList;
-//    }
-//
-//    public static void setLabelList(ArrayList<ImageLabel> labelList) {
-//        MainWindow.labelList = labelList;
-//    }
 }
