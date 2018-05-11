@@ -44,8 +44,6 @@ public class ManagerPane extends JPanel  {
         MainWindow.statusbar.setText("选中了0张图片");
         JButton play = new JButton("播放");
         play.setVisible(true);
-        // JTextField numOfPictures = new JTextField("wait content");
-        // numOfPictures.setVisible(true);
         JPanel test = new JPanel();
         test.add(play, BorderLayout.EAST);
         // test.add(numOfPictures,BorderLayout.CENTER);

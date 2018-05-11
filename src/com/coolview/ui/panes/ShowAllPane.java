@@ -4,8 +4,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
@@ -18,9 +16,13 @@ import javax.swing.event.MouseInputListener;
 
 import com.coolview.ui.MainWindow;
 
-public class ShowAllPane extends JPanel implements MouseInputListener, KeyListener {
+public class ShowAllPane extends JPanel implements MouseInputListener{
 
-    private int x1, y1;// 鼠标点击的起始位置
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private int x1, y1;// 鼠标点击的起始位置
     private int x, y;// 矩形左上角
     private int width, height;// 矩形长宽
     private int CX, CY;// 查找该点是否有组件
@@ -28,6 +30,7 @@ public class ShowAllPane extends JPanel implements MouseInputListener, KeyListen
     ArrayList<Component> components = new ArrayList<>();
     private ArrayList<ImageLabel> imageLabels = new ArrayList<>();// 保存已经选中的label
     private ImageIcon image;
+    private ImageLabel choiceLabel;
 
     public ShowAllPane() {
         super();
@@ -165,9 +168,8 @@ public class ShowAllPane extends JPanel implements MouseInputListener, KeyListen
 
     @Override
     public void mouseClicked(MouseEvent e) {
-
+    	
     }
-
     @Override
     public void mouseEntered(MouseEvent e) {
     }
@@ -184,22 +186,13 @@ public class ShowAllPane extends JPanel implements MouseInputListener, KeyListen
         jFrame.setSize(500, 500);
     }
 
-    @Override
-    public void keyTyped(KeyEvent e) {
-        // TODO Auto-generated method stub
 
-    }
+	public ImageLabel getChoiceLabel() {
+		return choiceLabel;
+	}
 
-    @Override
-    public void keyPressed(KeyEvent e) {
-        System.out.println("按下：" + KeyEvent.getKeyText(e.getKeyCode()) + "\n");
-
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        System.out.println("松开：" + KeyEvent.getKeyText(e.getKeyCode()) + "\n");
-
-    }
+	public void setChoiceLabel(ImageLabel choiceLabel) {
+		this.choiceLabel = choiceLabel;
+	}
 
 }
