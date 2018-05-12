@@ -1,14 +1,18 @@
 package com.coolview.ui.panes;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 
 import com.coolview.ui.MainWindow;
+import com.coolview.ui.frames.ViewFrame;
 import com.coolview.ui.menus.ManagerMenu;
 
 public class ManagerPane extends JPanel  {
@@ -16,9 +20,8 @@ public class ManagerPane extends JPanel  {
     /**
      * 
      */
-   
+    public static ImageLabel choiceLabel = new ImageLabel();
     private JPanel treePanel;
-
     public ManagerPane() {
        
         setLayout(new BorderLayout());
@@ -44,6 +47,20 @@ public class ManagerPane extends JPanel  {
         MainWindow.statusbar.setText("选中了0张图片");
         JButton play = new JButton("播放");
         play.setVisible(true);
+        play.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+			    if (choiceLabel!=null) {
+			        new ViewFrame(choiceLabel.getImageFile(),true);
+			    }else{
+			        JOptionPane.showMessageDialog(null, "请选择图片播放");
+			    }
+				
+			}
+		});
+        // JTextField numOfPictures = new JTextField("wait content");
+        // numOfPictures.setVisible(true);
         JPanel test = new JPanel();
         test.add(play, BorderLayout.EAST);
         // test.add(numOfPictures,BorderLayout.CENTER);

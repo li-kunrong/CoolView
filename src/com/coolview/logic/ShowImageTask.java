@@ -14,6 +14,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import com.coolview.ui.MainWindow;
 import com.coolview.ui.menus.ManagerMenu;
 import com.coolview.ui.panes.ImageLabel;
+import com.coolview.ui.panes.ManagerPane;
 import com.coolview.ui.panes.ShowAllPane;
 
 public class ShowImageTask extends SwingWorker<Void, ImageLabel> {
@@ -37,6 +38,7 @@ public class ShowImageTask extends SwingWorker<Void, ImageLabel> {
         this.showAllPane = showAllPane;
         this.showAllPane.setPreferredSize(new Dimension(420, 420));
         this.node = node;
+        ManagerPane.choiceLabel = null;
     }
 
     public void setShowAllPane(ShowAllPane showAllPane) {
@@ -52,6 +54,7 @@ public class ShowImageTask extends SwingWorker<Void, ImageLabel> {
         MainWindow.sp.updateUI();
         MainWindow.curShowAllPane = showAllPane;
         MainWindow.labelList = new ArrayList<>();
+//        ManagerPane.choiceLabel = new ImageLabel();
 
         int n = MainWindow.imagesList.size();
         int index = 0;

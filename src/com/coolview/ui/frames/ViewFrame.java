@@ -26,14 +26,6 @@ import com.coolview.ui.panes.ScalePane;
 
 public class ViewFrame extends JFrame implements ActionListener {
     
-//    private JPanel pane;
-//    private JPanel tempPane;
-    //修改
-//    private int frameWidth = 480 + 60;
-//    private int frameHeight = 360;
-//    private int imgChangedWidth;
-//    private int imgChangedHeight;
-//    private double changeRate;
 	private int imgWidth = 480;
 	private int imgHeight = 360;
 	private Image image;
@@ -73,13 +65,17 @@ public class ViewFrame extends JFrame implements ActionListener {
     private File[] files;
     
     public ViewFrame(File file,boolean isPlay) {
-        this.file = file;
-        this.isPlay = isPlay;
-        this.img=new ImageIcon(file.getAbsolutePath());
-        this.imgWidth = img.getIconWidth();
-        this.imgHeight = img.getIconHeight();
-        this.image = img.getImage();
-        createInfo();
+        if (file!=null) {
+            this.file = file;
+            this.isPlay = isPlay;
+            this.img=new ImageIcon(file.getAbsolutePath());            
+            this.imgWidth = img.getIconWidth();
+            this.imgHeight = img.getIconHeight();
+            this.image = img.getImage();
+            createInfo();
+        }else{
+            JOptionPane.showMessageDialog(null, "请选择图片播放");
+        }
     }
 
     private void createInfo() {
@@ -164,8 +160,8 @@ public class ViewFrame extends JFrame implements ActionListener {
         files = file1.listFiles();
         System.out.println(files.length);
         for(int j = 0;j < files.length; j++) {
-        	if(files[j].isFile()&&(files[j].getName().endsWith(".jpg")
-        	        ||files[j].getName().endsWith(".png")||files[j].getName().endsWith(".gif"))) {
+            if(files[j].isFile()&&(files[j].getName().endsWith(".jpg")
+                    ||files[j].getName().endsWith(".png")||files[j].getName().endsWith(".gif"))) {
         		filesName.add(files[j].getName());
         		filesAbsPath.add(files[j].getAbsolutePath());
         	}
@@ -186,7 +182,7 @@ public class ViewFrame extends JFrame implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
             JButton button = (JButton) e.getSource();
             if (button == preButton) {
-                resetButton.setEnabled(true);
+                
             	if (i == 0) {
                     i = filesAbsPath.size() - 1;
                 } else {
@@ -194,7 +190,6 @@ public class ViewFrame extends JFrame implements ActionListener {
                 }
                 showImagePane.loadImage(filesAbsPath.get(i));
             } else if (button == nextButton) {
-                resetButton.setEnabled(true);
                 if (i == filesAbsPath.size() - 1) {
                     i = 0;
                 } else {
