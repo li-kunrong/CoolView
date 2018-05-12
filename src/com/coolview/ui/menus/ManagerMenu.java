@@ -40,6 +40,7 @@ public class ManagerMenu implements ActionListener {
     private ImageLabel imageLabel = null;
     private EditPhoto editPhoto = new EditPhoto();
     private ViewType viewType = new ViewType();
+    private Object[] options = { " 确定 ", " 取消 " };
 
     private ShowAllPane showAllPane;
     private Comparator<File> compareType;
@@ -111,7 +112,7 @@ public class ManagerMenu implements ActionListener {
         item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         item.addActionListener(this);
         menu.add(item);
-        
+
         item = new JMenuItem("剪切(T)");
         item.setMnemonic(KeyEvent.VK_T);
         item.setActionCommand("cut");
@@ -140,12 +141,13 @@ public class ManagerMenu implements ActionListener {
         item.addActionListener(this);
         menu.add(item);
 
-//        item = new JMenuItem("旋转(R)");
-//        item.setMnemonic(KeyEvent.VK_R);
-//        item.setActionCommand("rotate");
-//        item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, ActionEvent.CTRL_MASK));
-//        item.addActionListener(this);
-//        menu.add(item);
+        // item = new JMenuItem("旋转(R)");
+        // item.setMnemonic(KeyEvent.VK_R);
+        // item.setActionCommand("rotate");
+        // item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R,
+        // ActionEvent.CTRL_MASK));
+        // item.addActionListener(this);
+        // menu.add(item);
 
         item = new JMenuItem("重命名(M)");
         item.setMnemonic(KeyEvent.VK_M);
@@ -298,8 +300,6 @@ public class ManagerMenu implements ActionListener {
         item.addActionListener(this);
         menu.add(item);
 
-    
-
         menu = new JMenu("帮助(H)");
         menu.setMnemonic(KeyEvent.VK_H);
         menuBar.add(menu);
@@ -331,14 +331,14 @@ public class ManagerMenu implements ActionListener {
         item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, ActionEvent.CTRL_MASK));
         item.addActionListener(this);
         popupMenu.add(item);
-        
+
         item = new JMenuItem("删除(D)");
         item.setMnemonic(KeyEvent.VK_D);
         item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, ActionEvent.ALT_MASK));
         item.setActionCommand("delete");
         item.addActionListener(this);
         popupMenu.add(item);
-        
+
         item = new JMenuItem("剪切(X)");
         item.setMnemonic(KeyEvent.VK_X);
         item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.ALT_MASK));
@@ -352,7 +352,7 @@ public class ManagerMenu implements ActionListener {
         item.setActionCommand("copy");
         item.addActionListener(this);
         popupMenu.add(item);
-        
+
         item = new JMenuItem("粘贴(P)");
         item.setMnemonic(KeyEvent.VK_P);
         item.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, ActionEvent.ALT_MASK));
@@ -361,7 +361,8 @@ public class ManagerMenu implements ActionListener {
         popupMenu.add(item);
 
         submenu = new JMenu("显示方式(S)");
-//        submenu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, ActionEvent.ALT_MASK));
+        // submenu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S,
+        // ActionEvent.ALT_MASK));
         submenu.setActionCommand("showType");
         popupMenu.add(submenu);
 
@@ -396,10 +397,6 @@ public class ManagerMenu implements ActionListener {
         radioButtonMenuItem.addActionListener(this);
         group.add(radioButtonMenuItem);
         submenu.add(radioButtonMenuItem);
-      
-       
-        
-
 
         item = new JMenuItem("刷新(E)");
         item.setActionCommand("repaint");
@@ -410,7 +407,8 @@ public class ManagerMenu implements ActionListener {
 
         submenu = new JMenu("排列依据(O)");
         submenu.setActionCommand("sort");
-//        submenu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, ActionEvent.ALT_MASK));
+        // submenu.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O,
+        // ActionEvent.ALT_MASK));
         popupMenu.add(submenu);
 
         group = new ButtonGroup();
@@ -551,7 +549,7 @@ public class ManagerMenu implements ActionListener {
         AbstractListener popupListener = new PopupListener(popup, imageLabel, editfile);
         component.addMouseListener(popupListener);
         component.addKeyListener(popupListener);
-//        component.addKeyListener(new PaneKeyListener());
+        // component.addKeyListener(new PaneKeyListener());
 
     }
 
@@ -578,25 +576,35 @@ public class ManagerMenu implements ActionListener {
         case path:
             editPhoto.getPath(frame);
             break;
-         case cut:
-             pasetFile = chooseFile;
-             System.out.println(pasetFile);
-             imageLabel = choosedImage;
-             editPhoto.cut(editPane);
+        case cut:
+            pasetFile = chooseFile;
+            System.out.println(pasetFile);
+            imageLabel = choosedImage;
+            editPhoto.cut(editPane);
             break;
-         case copy:
-             pasetFile = chooseFile;
-             imageLabel = choosedImage;
-             editPane = MainWindow.curShowAllPane;
-             editPhoto.copy();
-         break;
-         case paste:
-             System.out.println(pasetFile);
-             editPhoto.paste(frame);
-//             System.out.println(editfile);
-         break;
+        case copy:
+            pasetFile = chooseFile;
+            imageLabel = choosedImage;
+            editPane = MainWindow.curShowAllPane;
+            editPhoto.copy();
+            break;
+        case paste:
+            System.out.println(pasetFile);
+            editPhoto.paste(frame);
+            // System.out.println(editfile);
+            break;
         case delete:
-            editPhoto.delete(chooseFile, choosedImage);
+            // JOptionPane.showConfirmDialog(null, "确认", "取消",
+            // JOptionPane.YES_OPTION,JOptionPane.NO_OPTION);
+            int response = JOptionPane.showOptionDialog(null, "确认删除吗？", "提示", JOptionPane.YES_OPTION,
+                    JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+            if (response == 0) {
+                System.out.println("您按下了第确认按钮 ");
+                editPhoto.delete(MainWindow.selectList);
+            } else if (response == 1) {
+                System.out.println("您按下了第Cancel按钮 ");
+            } 
+
             break;
         case rename:
             editPhoto.rename(frame, editfile, chooseFile);
@@ -646,7 +654,7 @@ public class ManagerMenu implements ActionListener {
                 // TODO Auto-generated catch block
                 System.out.println("error");
             }
-            JOptionPane.showConfirmDialog(null, "需要你重启应用才生效", "提示", JOptionPane.YES_NO_OPTION); 
+            JOptionPane.showConfirmDialog(null, "需要你重启应用才生效", "提示", JOptionPane.YES_NO_OPTION);
             break;
         case windows:
             try {
@@ -655,9 +663,9 @@ public class ManagerMenu implements ActionListener {
                 // TODO Auto-generated catch block
                 System.out.println("error");
             }
-            JOptionPane.showConfirmDialog(null, "需要你重启应用才生效", "提示", JOptionPane.YES_NO_OPTION); 
+            JOptionPane.showConfirmDialog(null, "需要你重启应用才生效", "提示", JOptionPane.YES_NO_OPTION);
             break;
-            
+
         case mac:
             try {
                 FileHelper.changeTheme("BeautyEye");
@@ -665,14 +673,12 @@ public class ManagerMenu implements ActionListener {
                 // TODO Auto-generated catch block
                 System.out.println("error");
             }
-            JOptionPane.showConfirmDialog(null, "需要你重启应用才生效", "提示", JOptionPane.YES_NO_OPTION); 
+            JOptionPane.showConfirmDialog(null, "需要你重启应用才生效", "提示", JOptionPane.YES_NO_OPTION);
             break;
         default:
             break;
         }
 
     }
-
-
 
 }
