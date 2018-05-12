@@ -140,12 +140,12 @@ public class PopupListener extends AbstractListener {
     @Override
     public void mousePressed(MouseEvent e) {
        
-        maybeShowPopup(e);
+//        maybeShowPopup(e);
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-//        maybeShowPopup(e);
+        maybeShowPopup(e);
     }
 
    

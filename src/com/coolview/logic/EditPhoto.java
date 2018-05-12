@@ -25,6 +25,7 @@ import com.coolview.ui.menus.ManagerMenu;
 import com.coolview.ui.menus.RepaintPane;
 import com.coolview.ui.panes.ImageLabel;
 import com.coolview.ui.panes.ShowAllPane;
+import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Array;
 
 import sun.applet.Main;
 
@@ -81,17 +82,18 @@ public class EditPhoto {
 
     }
 
-    public void delete(File chooseFile, ImageLabel choosedImage) {
+    public void delete(ArrayList<File> list) {
         if (!MainWindow.isSelectAll){
-            if (chooseFile == null)
+            if (list == null)
                 return;
-            chooseFile.delete();
-
-            MainWindow.curShowAllPane.remove(choosedImage);
+            for (int i = 0;i < list.size(); i++) {
+                MainWindow.imagesList.remove(list.get(i));
+                list.get(i).delete();
+            }
             MainWindow.curShowAllPane.repaint();
             MainWindow.curShowAllPane.validate();
+            new RepaintPane().execute();
 
-            MainWindow.imagesList.remove(chooseFile);
             MainWindow.choosedImgFile = null;
             MainWindow.choosedImg = null;
             return;
@@ -99,7 +101,6 @@ public class EditPhoto {
         
         File[] imageFile = BasicFunction.getImages(MainWindow.curNodePath);
         for (int i = 0;i < imageFile.length; i++) {
-            
             MainWindow.imagesList.remove(imageFile[i]);
             imageFile[i].delete();
         }
@@ -255,8 +256,18 @@ public class EditPhoto {
 
     public void cut(ShowAllPane editPane) {
         editPane = MainWindow.curShowAllPane;
-        MainWindow.needDeleted = true;
-        MainWindow.ishasEctype = true;
+        if (!MainWindow.isSelectAll){
+//          MainWindow.fileList = new ArrayList<>();
+          MainWindow.fileList = MainWindow.selectList;
+          System.out.println(MainWindow.selectList.size());
+          MainWindow.needDeleted = true;
+          MainWindow.ishasEctype = true; 
+          return;
+      }
+      
+      MainWindow.needDeleted = true;
+      MainWindow.ishasEctype = true; 
+      MainWindow.fileList = MainWindow.imagesList;
 
     }
 
